@@ -1,0 +1,238 @@
+
+1.变量：
+
+关键字     变量类型
+ ↓          ↓
+var price: Int = 100;
+     ↑            ↑
+   变量名        变量值
+
+val 声明的变量，我们叫做不可变变量，它的值在初始化以后就无法再次被修改，它相当于 Java 里面的 final 变量。
+var 声明的变量，我们叫做可变变量，它对应 Java 里的普通变量。
+
+
+2.基础类型：包括我们常见的数字类型、布尔类型、字符类型，以及前面这些类型组成的数组。这些类型是我们经常会遇到的概念，因此我们把它统一归为“基础类型”。
+
+Java 中有 原始类型 和 包装类型
+
+Kotlin 中没有原始类型这个概念，在Kotlin中，一切都是对象
+val i: Double = 1.toDouble()
+
+
+3.空安全
+
+val i: Double = null // 编译器报错
+val j: Double? = null // 编译通过
+
+
+4.数字类型：
+
+val int = 1
+val long = 1234567L
+val double = 13.14
+val float = 13.14F
+val hexadecimal = 0xAF   （十六进制）
+val binary = 0b01010101  （二进制）
+
+Kotlin 隐式转换被废弃，只能用显示转换：
+val i = 100
+val j: Long = i // 编译器报错
+val j: Long = i.toLong() // 编译通过
+
+
+5.布尔类型
+ Kotlin 中布尔类型的变量，它只有两种值，分别是 true和false
+ “&”代表“与运算”；
+ “|”代表“或运算”；
+ “!”代表“非运算”；
+ “&&”和“||”分别代表它们对应的“短路逻辑运算”。
+
+
+6.字符 Char
+val c: Char = 'A'
+
+
+7.字符串String
+val s = "Hello Kotlin!"
+
+Kotlin还提供了非常简洁的字符串模板：
+val name = "Kotlin"
+print("Hello $name!")
+/*            ↑
+    直接在字符串中访问变量
+*/
+// 输出结果：
+Hello Kotlin!
+
+
+Kotlin还提供了一个原始字符串，是用三个引号来表示的，它可以用于存放复杂的多行文本，并且它定义的时候是什么格式，最终打印也会是对应的格式：
+val s = """
+       当我们的字符串有复杂的格式时
+       原始字符串非常的方便
+       因为它可以做到所见即所得。 """
+print(s)
+
+
+8.数组
+在 Kotlin 当中，我们一般会使用 arrayOf() 来创建数组
+val arrayInt = arrayOf(1, 2, 3)
+val arrayString = arrayOf("apple", "pear")
+
+Kotlin 的数组仍然不属于集合，但它的一些操作是跟集合统一的。
+
+val array = arrayOf("apple", "pear")
+println("Size is ${array.size}") //数组和集合一样，使用array.size 就能获取数组的长度
+println("First element is ${array[0]}")
+
+// 输出结果：
+Size is 2
+First element is apple
+
+
+9.函数声明
+
+/*
+关键字    函数名          参数类型   返回值类型
+ ↓        ↓                ↓       ↓      */
+fun helloFunction(name: String): String {
+    return "Hello $name !"
+}/*   ↑
+   花括号内为：函数体
+*/
+
+Kotlin的 单一表达式函数 ：省略函数体的花括号，直接使用“=”来连接，将其变成一种类似变量赋值的函数形式
+fun helloFunction(name: String): String = "Hello $name !"
+
+
+10.函数的调用
+Kotlin 提供了一些新的特性，那就是 命名参数。简单理解，就是它允许我们在调用函数的时候传入“形参的名字”
+createUser(
+    name = "Tom",
+    age = 30,
+    gender = 1,
+    friendCount = 78,
+    feedCount = 2093,
+    likeCount = 10937,
+    commentCount = 3285
+)
+
+Kotlin还支持 参数默认值，这个特性在参数较多的情况下同样有很大的优势：
+fun createUser(
+    name: String,
+    age: Int,
+    gender: Int = 1,
+    friendCount: Int = 0,
+    feedCount: Int = 0,
+    likeCount: Long = 0L,
+    commentCount: Int = 0
+) {
+    //..
+}
+
+这样在调用的时候，就只需要传 3 个参数，剩余的 4 个参数没有传，但是 Kotlin 编译器会自动帮我们填上默认值
+createUser(
+    name = "Tom",
+    age = 30,
+    commentCount = 3285
+)
+
+
+11.流程控制
+在 Kotlin 当中，流程控制主要有 if、when、for、 while，这些语句可以控制代码的执行流程。
+
+---if:
+Kotlin的 if 可以作为 表达式 来使用：
+val i = 1
+val message = if (i > 0) "Big" else "Small"
+print(message) //输出结果：Big
+
+Kotlin 中往往存在可空类型的变量，所以需要判空：
+fun getLength(text: String?): Int {
+  return if (text != null) text.length else 0
+}
+
+当然Kotlin 还提供了一种简写的方式：Elvis表达式 ?:
+fun getLength(text: String?): Int {
+  return text?.length ?: 0 //如果text不为空，就返回length ，否则返回0
+}
+
+
+---when
+
+当我们的代码逻辑只有两个分支的时候，我们一般会使用 if/else，而在大于两个逻辑分支的情况下，我们使用 when
+val i: Int = 1
+when(i) {
+    1 -> print("一")
+    2 -> print("二")
+    else -> print("i 不是一也不是二")
+}
+
+Kotlin的when可以作为表达式，为变量赋值：
+
+val i: Int = 1
+val message = when(i) {
+    1 -> "一"
+    2 -> "二"
+    else -> "i 不是一也不是二" // 如果去掉这行，会报错
+}
+print(message)
+
+
+---循环迭代while 和 for
+while 循环，我们一般是用于重复执行某些代码
+
+var i = 0
+while (i <= 2) {
+    println(i)
+    i++
+}
+
+var j = 0
+do {
+    println(j)
+    j++
+} while (j <= 2)
+
+
+for 更多的是用于 "迭代"：
+val array = arrayOf(1, 2, 3)
+for (i in array) {
+    println(i)
+}
+
+除了迭代数组和集合以外，Kotlin 还支持迭代一个“区间”。
+我们可以使用“..”来连接数值区间的两端，比如“1..3”就代表从 1 到 3 的闭区间，左闭右闭：
+val oneToThree = 1..3 // 代表 [1, 3]
+
+用for来对这个闭区间进行迭代：
+for (i in oneToThree) {
+    println(i)
+}
+
+还可以用for对这个闭区间进行 逆序迭代：
+for (i in 6 downTo 0 step 2) {
+    println(i)
+}
+输出结果：
+6
+4
+2
+0
+
+以上代码的含义就是逆序迭代一个区间，从 6 到 0，每次迭代的步长是 2，这意味着 6 迭代过后，到 4、2，最后到 0。
+需要特别注意的是，逆序区间我们不能使用“6..0”来定义，如果用这样的方式来定义的话，代码将无法正常运行。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
